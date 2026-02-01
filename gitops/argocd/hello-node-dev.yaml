@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-node-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/lucasaugusto-silva/hello-gitops.git
+    targetRevision: main
+    path: gitops/apps/hello-node/overlays/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

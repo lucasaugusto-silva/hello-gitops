@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-node
+  template:
+    metadata:
+      labels:
+        app: hello-node
+    spec:
+      containers:
+        - name: hello-node
+          image: ghcr.io/lucasaugusto-silva/hello-node:1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_NAME
+              value: "Kubernetes"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-node
+spec:
+  selector:
+    app: hello-node
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+
